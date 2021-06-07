@@ -3,7 +3,7 @@ pip>=9
 setuptools>=26
 twine
 wheel>=0.29
-DeepForest
+
 
 # data science
 numpy
@@ -30,6 +30,5 @@ memoized-property
 termcolor
 
 #Tree Analysis
-deepforest
 deepforest-pytorch
 ipywidgets
