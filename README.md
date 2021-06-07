@@ -16,7 +16,7 @@ scale=1|	scale=2
 "
 
 reference: https://developers.google.com/maps/documentation/maps-static/start#Imagesizes
-
+price is taken from the google cloud account
 
 
 Please document the project the better you can.
