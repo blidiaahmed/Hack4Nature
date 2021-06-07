@@ -11,6 +11,7 @@ The size parameter, in conjunction with center, defines the coverage area of a m
 This table shows the maximum allowable values for the size parameter at each scale value.
 
 scale=1|	scale=2
+
 640x640|	640x640 (returns 1280x1280 pixels)
 "
 
