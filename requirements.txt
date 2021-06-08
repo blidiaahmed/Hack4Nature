@@ -32,3 +32,8 @@ termcolor
 deepforest
 deepforest-pytorch
 ipywidgets
+
+#GoogleMaps
+python-dotenv
+googlemaps
+shapely
