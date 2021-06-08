@@ -30,5 +30,5 @@ memoized-property
 termcolor
 
 #Tree Analysis
-deepforest-pytorch
+deepforest
 ipywidgets
