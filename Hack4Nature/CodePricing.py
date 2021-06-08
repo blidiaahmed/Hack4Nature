@@ -11,3 +11,11 @@ def Pricing(superficies_total=240,#en kilometre carré,
     pris_total=nb_requettes*pris_requette_n2
 
     return pris_total
+
+ls=[
+[43.356819, 5.482127]
+[43.374439, 5.345074]
+[43.253117, 5.387901]
+[43.292301, 5.453946]]
+
+
