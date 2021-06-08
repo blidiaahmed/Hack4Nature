@@ -32,3 +32,8 @@ termcolor
 #Tree Analysis
 deepforest
 ipywidgets
+
+#GoogleMaps
+python-dotenv
+googlemaps
+shapely
