@@ -3,6 +3,27 @@
 - Description: Project Description
 - Data Source:
 - Type of analysis:
+- Important links: https://developers.google.com/maps/documentation/urls/get-started#map-action
+- conserning the google map api: the price of 1 kilo request is 1,6... dollar, the maximum size of a request map is explained in this text:
+*" Image sizes
+The size parameter, in conjunction with center, defines the coverage area of a map. It also defines the output size of the map in pixels, when multiplied with the scale value (which is 1 by default).
+
+This table shows the maximum allowable values for the size parameter at each scale value.
+
+scale=1|	scale=2
+
+640x640|	640x640 (returns 1280x1280 pixels)
+"
+
+reference: https://developers.google.com/maps/documentation/maps-static/start#Imagesizes
+price is taken from the google cloud account
+
+
+
+
+#
+superficies de marseille: 240.6 KM²
+
 
 Please document the project the better you can.
 
