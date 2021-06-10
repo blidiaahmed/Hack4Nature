@@ -29,7 +29,6 @@ def generate_csv_training():
     
     # converted dataframe to file and saved alongside the images
     csv = os.path.join(path_images_csv,'csv_85.csv')
-    print(csv)
     df.to_csv(csv, index=False)
     
     #df et csv sont retournés actuellement pour le test, mais return peut être None
