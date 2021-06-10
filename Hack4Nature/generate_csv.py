@@ -4,33 +4,35 @@ import glob
 import os
 
 
-def generate_csv_training(path_to_target = 'raw_data/'):
+def generate_csv_training():
     '''
         Généner le fichier csv pour le training du model.
-        Les dossiers 'data_images' et 'data_xml' contenant les iamges et les fichiers .xml respectivement
-        doivent etre dans le répertoire raw_data.
+        Les dossiers 'data_images' et 'data_xml' contenant respectivement les images et les fichiers .xml 
+        doivent être dans le répertoire raw_data.
+        Les dossiers sont codés en dur juste pour l'entrainement, so no worries !!!
     '''
-    #parent_folder = os.path.dirname(os.path.dirname(path_to_target))
-    parent_folder = os.path.dirname(path_to_target)
-    
-    path_image = '/data_images/'
-    path_csv = os.path.join(parent_folder, 'data_csv/')
 
-    path_xml_list = glob.glob(path_to_target+'data_xml/*.xml')
-    
+    path_images_csv = '../raw_data/data_images/'    
+    path_xml = '../raw_data/data_xml/'
+
+
+    path_xml_list = glob.glob(path_xml+'*.xml')
+
     liste = []
     for path_to_file in path_xml_list:
         liste.append(utilities.xml_to_annotations(path_to_file))
     
     # add image_path
     df = pd.concat(liste).reset_index(drop = True)
-    df['image_path'].apply(lambda x: path_image + x + '.npg')
+    df['image_path'] = df['image_path'].apply(lambda x: x + '.png')
+
     
-    # converted dataframe to csv file and saved alongside the images
-    csv = os.path.join(path_csv,"generated_test.csv")
+    # converted dataframe to file and saved alongside the images
+    csv = os.path.join(path_images_csv,'csv_85.csv')
+    print(csv)
     df.to_csv(csv, index=False)
     
-    #df et csv sont retournés actuellement pour le test, mais return peut être None 
+    #df et csv sont retournés actuellement pour le test, mais return peut être None
     return df, csv
 
 
@@ -40,16 +42,12 @@ def generate_csv_evaluation(xml_path):
         test: Generates a csv file from corresponding xml file and save in 'data_csv' folder in raw_data folder
         for model evaluation or prediction
     """
-    path_image = 'data_images/'
     
     # df is the DataFrame containing the annotations
     df = utilities.xml_to_annotations(xml_path)
-    df['image_path'].apply(lambda x: path_image + x + '.npg')
+    df['image_path'] = df['image_path'].apply(lambda x: x + '.png')
        
-    parent_folder = os.path.dirname(os.path.dirname(xml_path))
-    path_csv = os.path.join(parent_folder, 'data_csv/')
-    csv = os.path.join(path_csv,"csv_4_eval.csv")
-    
+    csv = os.path.join(os.path.dirname(xml_path),"csv_eval.csv")    
     df.to_csv(csv, index=False)
     
     #df et csv sont retournés actuellement pour le test, mais return peut être None
