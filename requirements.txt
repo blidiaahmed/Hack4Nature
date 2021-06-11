@@ -37,3 +37,6 @@ ipywidgets
 python-dotenv
 googlemaps
 shapely
+
+#DataAugmentation
+imgaug
