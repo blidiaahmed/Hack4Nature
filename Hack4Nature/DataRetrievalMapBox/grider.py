@@ -1,3 +1,4 @@
+import random
 import matplotlib.pyplot as plt
 import itertools
 from shapely.geometry import mapping, shape,Point,Polygon
@@ -17,7 +18,7 @@ class city_inspectation:
         self.file_load()
         self.polygon=self.forming_polygon()
         self.framing_region()
-        self.working_grid()
+        
 
   
     def file_load(self):
@@ -97,7 +98,7 @@ class city_inspectation:
         plt.scatter(lsstt[:,1],lsstt[:,0],s=11,c=sea_points_colors)
 
 
-def if_meet_city(self,grid=np.array([[0,0],[1,0],[0,1],[1,1]])):
+    def if_meet_city(self,grid=np.array([[0,0],[1,0],[0,1],[1,1]])):
         #self.polygon=forming_polygon()
         for i in range(grid.shape[0]):
             point = Point(grid[i,0],grid[i,1])
@@ -108,7 +109,48 @@ def if_meet_city(self,grid=np.array([[0,0],[1,0],[0,1],[1,1]])):
                     return True
                 j+=1
             return False
+    def if_in_city(self,point):
+        #self.polygon=forming_polygon()
+        
+        point = Point(point[0],point[1])
+        j=0
+        found=False
+        while j<len(self.polygon) and not found:
+            if self.polygon[j].contains(point):
+                return True
+            j+=1
+        return False
 
-def work_grid(self):
+    def pick_point(self,number,size):
+        sector=self.sectors_array[0][0]
+        maxx=max([sector[i][0] for i in range(len(sector))])
+        minx=min([sector[i][0] for i in range(len(sector))])
+        maxy=max([sector[i][1] for i in range(len(sector))])
+        miny=min([sector[i][1] for i in range(len(sector))])
+        l1=np.linspace(minx,maxx,size[0])
+        l2=np.linspace(miny,maxy,size[1])   
+        points=[]
+        for i in range(1,number+1):
+            inside=False
+            while not inside:    
+                r1=random.randint(0,len(l1)-1)
+                r2=random.randint(0,len(l2)-1)
+                point=[l1[r1],l2[r2]]
+                print(self.if_in_city(point),point)
+                if self.if_in_city(point):
+                    inside =True
+                    points.append(point)
+        return points
+
+
+                
+
+
+
+
+
+
+
+
     
 
