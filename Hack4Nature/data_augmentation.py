@@ -6,7 +6,10 @@ import imageio
 import imgaug as ia
 import imgaug.augmenters as iaa
 
+# test 
 
+from deepforest import utilities
+from Hack4Nature.show_image import image_label
 
 def horizontal_flip(data):
     """
@@ -54,7 +57,6 @@ def vertical_flip(data):
     
     # On recupère l'image
     im = Image.open(data['image_path'][0])
-    
     
     # On recupère le chemin d'accès
     directory = os.path.dirname(data['image_path'][0])
@@ -121,3 +123,7 @@ def color_change(data):
     data_color['image_path'] = os.path.join(directory,f"color_{base}")
     
     return data_color
+
+if __name__ == "__main__" :
+    annotation3 = utilities.xml_to_annotations('labels_43.2863_5.3909_a9CTV64.xml')
+    annotation3['image_path'] = annotation3['image_path'] +'.png'
