@@ -4,7 +4,7 @@ import glob
 import os
 
 
-def generate_csv_training():
+def generate_csv_training(csv_name='csv_training.csv'):
     '''
         Généner le fichier csv pour le training du model.
         Les dossiers 'data_images' et 'data_xml' contenant respectivement les images et les fichiers .xml 
@@ -12,8 +12,8 @@ def generate_csv_training():
         Les dossiers sont codés en dur juste pour l'entrainement, so no worries !!!
     '''
 
-    path_images_csv = '../raw_data/data_images/'    
-    path_xml = '../raw_data/data_xml/'
+    path_images_csv = 'raw_data/data_images/'    
+    path_xml = 'raw_data/data_xml/'
 
 
     path_xml_list = glob.glob(path_xml+'*.xml')
@@ -28,17 +28,18 @@ def generate_csv_training():
 
     
     # converted dataframe to file and saved alongside the images
-    csv = os.path.join(path_images_csv,'csv_85.csv')
+    csv = os.path.join(path_images_csv, csv_name)
     df.to_csv(csv, index=False)
     
-    #df et csv sont retournés actuellement pour le test, mais return peut être None
+    #df et path csv sont retournés actuellement pour le test, mais return peut être None
     return df, csv
 
 
 
-def generate_csv_evaluation(xml_path):
+def generate_csv_evaluation(xml_path, csv_name='csv_eval.csv'):
     """
-        test: Generates a csv file from corresponding xml file and save in 'data_csv' folder in raw_data folder
+        test: Generates a csv file from corresponding xml file 
+        and save in 'data_csv' folder in raw_data folder
         for model evaluation or prediction
     """
     
@@ -46,16 +47,15 @@ def generate_csv_evaluation(xml_path):
     df = utilities.xml_to_annotations(xml_path)
     df['image_path'] = df['image_path'].apply(lambda x: x + '.png')
        
-    csv = os.path.join(os.path.dirname(xml_path),"csv_eval.csv")    
+    csv = os.path.join(os.path.dirname(xml_path), csv_name)    
     df.to_csv(csv, index=False)
     
-    #df et csv sont retournés actuellement pour le test, mais return peut être None
+    #df et path csv sont retournés actuellement pour le test, mais return peut être None
     return df, csv
 
 
 if __name__ == "__main__":
-    path_to_raw_data = 'raw_data/'
-    df, annotations_path = generate_csv_training(path_to_raw_data)
+    df, annotations_path = generate_csv_training("csv_name.csv")
     print(df.head(3))
     print(annotations_path)
     
