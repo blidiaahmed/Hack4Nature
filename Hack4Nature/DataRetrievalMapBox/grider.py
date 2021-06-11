@@ -13,30 +13,19 @@ class city_inspectation:
     # miny=0
     # maxy=1
     
-    def __init__(self,e):
-        #
-        
+    def __init__(self):
         self.file_load()
         self.polygon=self.forming_polygon()
-        
         self.framing_region()
-        
+        self.working_grid()
+
+  
     def file_load(self):
         with open(self.file_object) as f:
 
             self.Departement_file=load(f)
         return self.Departement_file
-    def if_meet_city(self,grid=np.array([[0,0],[1,0],[0,1],[1,1]])):
-        self.polygon=forming_polygon()
-        for i in range(grid.shape[0]):
-            point = Point(grid[i,0],grid[i,1])
-            j=0
-            found=False
-            while j<len(self.polygon) and not found:
-                if self.polygon[j].contains(point):
-                    return True
-                j+=1
-            return False
+
     def forming_polygon(self):
         #"../Hack4Nature/data/limit_marseille.json"):
         self.sectors_array=self.Departement_file["features"][0]["geometry"]["coordinates"]
@@ -64,8 +53,7 @@ class city_inspectation:
         self.maxy=max(self.all_sectors[:,0])
         return [self.minx,self.maxx,self.miny,self.maxy]
 
-    def forming_grid(self,size#,minx=minx,maxx=maxx,miny=miny,maxy=maxy
-    ):
+    def forming_grid(self,size):
         #print(self.maxx)
         sector=self.sectors_array[0][0]
         maxx=max([sector[i][0] for i in range(len(sector))])
@@ -78,6 +66,7 @@ class city_inspectation:
         self.grid=np.array(self.grid)
         return self.grid
     def visualise_data(self,size=(4,4)):
+
         self.forming_grid(size)
         
         island_points_colors=[]
@@ -106,3 +95,20 @@ class city_inspectation:
         island_points_colors[len(island_points_colors)-1]=0
         plt.scatter(island_points[:,1],island_points[:,0])#,s=10,c=island_points_colors) 
         plt.scatter(lsstt[:,1],lsstt[:,0],s=11,c=sea_points_colors)
+
+
+def if_meet_city(self,grid=np.array([[0,0],[1,0],[0,1],[1,1]])):
+        #self.polygon=forming_polygon()
+        for i in range(grid.shape[0]):
+            point = Point(grid[i,0],grid[i,1])
+            j=0
+            found=False
+            while j<len(self.polygon) and not found:
+                if self.polygon[j].contains(point):
+                    return True
+                j+=1
+            return False
+
+def work_grid(self):
+    
+
