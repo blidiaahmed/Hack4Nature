@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 def horizontal_flip(data):
     """
     prend un dataframe avec le chemin de l'image et les coordonnées des labels et renvoie
-    la transformée verticale de cette image avec la transformée verticale des annotations
+    la transformée horizontal de cette image avec la transformée verticale des annotations
     """
     # On recupère l'image
     im = Image.open(data['image_path'][0])
@@ -38,7 +38,7 @@ def horizontal_flip(data):
 def vertical_flip(data):
     """
     prend un dataframe avec le chemin de l'image et les coordonnées des labels et renvoie
-    la transformée horizontale de cette image avec la transformée horizontale des annotations
+    la transformée verticale de cette image avec la transformée horizontale des annotations
     """
     # On recupère l'image
     im = Image.open(data['image_path'][0])
