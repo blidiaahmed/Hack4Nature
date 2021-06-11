@@ -14,7 +14,7 @@ from Hack4Nature.show_image import image_label
 def horizontal_flip(data):
     """
     prend un dataframe avec le chemin de l'image et les coordonnées des labels et renvoie
-    la transformée verticale de cette image avec la transformée verticale des labels
+    la transformée horizontal de cette image avec la transformée verticale des annotations
     """
     path_images_augmented = '../raw_data/data_images_augmented/' 
     
@@ -37,7 +37,7 @@ def horizontal_flip(data):
     # On récupère sa dimension
     image_shape = plt.imread(data['image_path'][0]).shape
     
-    # On adapate les labels
+    # On adapate les annotations
     data_flip = data.copy()
     
     data_flip['image_path'] = os.path.join(directory,f"flip_{base}")
@@ -51,7 +51,7 @@ def horizontal_flip(data):
 def vertical_flip(data):
     """
     prend un dataframe avec le chemin de l'image et les coordonnées des labels et renvoie
-    la transformée horizontale de cette image avec la transformée horizontale des labels
+    la transformée verticale de cette image avec la transformée horizontale des annotations
     """
     path_images_augmented = '../raw_data/data_images_augmented/' 
     
@@ -72,7 +72,7 @@ def vertical_flip(data):
     # On récupère sa dimension
     image_shape = plt.imread(data['image_path'][0]).shape
     
-    # On adapate les labels
+    # On adapate les annotations
     data_miror = data.copy()
     
     data_miror['image_path'] = os.path.join(directory,f"miror_{base}")
@@ -82,7 +82,6 @@ def vertical_flip(data):
     
     # On retourne un DataFrame près à l'emploi
     return data_miror
-
 
 def bright_change(data):
     
@@ -124,6 +123,4 @@ def color_change(data):
     
     return data_color
 
-if __name__ == "__main__" :
-    annotation3 = utilities.xml_to_annotations('labels_43.2863_5.3909_a9CTV64.xml')
-    annotation3['image_path'] = annotation3['image_path'] +'.png'
+

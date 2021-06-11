@@ -66,7 +66,7 @@ def generate_square_coordinates(start_lat, start_lon, end_lat, end_lon, pas_lat,
 # En haut => 43.391017 (arrondir à 43.4)
 # A gauche => 5.278058 (arrondir à 5.28)
 # A droite => 5.532462 (arrondir à 5.54)
-generate_square_coordinates(43.20, 5.28, 43.40, 5.54, 0.0006, 0.0008)
+# generate_square_coordinates(43.20, 5.28, 43.40, 5.54, 0.0006, 0.0008)
 
 def generate_marseille_images(start_lat, start_lon, end_lat, end_lon, pas_lat, pas_lon):
 	positions = generate_square_coordinates(start_lat, start_lon, end_lat, end_lon, pas_lat, pas_lon)
