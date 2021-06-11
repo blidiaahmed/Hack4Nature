@@ -24,7 +24,7 @@ def horizontal_flip(data):
     # On récupère sa dimension
     image_shape = plt.imread(data['image_path'][0]).shape
     
-    # On adapate les labels
+    # On adapate les annotations
     data_flip = data.copy()
     
     data_flip['image_path'] = os.path.join(directory,f"flip_{base}")
@@ -57,7 +57,7 @@ def vertical_flip(data):
     # On récupère sa dimension
     image_shape = plt.imread(data['image_path'][0]).shape
     
-    # On adapate les labels
+    # On adapate les annotations
     data_miror = data.copy()
     
     data_miror['image_path'] = os.path.join(directory,f"miror_{base}")
