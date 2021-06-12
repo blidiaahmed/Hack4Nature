@@ -5,7 +5,7 @@ from shapely.geometry import mapping, shape,Point,Polygon
 import numpy as np
 from json import load
 from itertools import product
-
+import os
 
 class city_inspectation:
     file_object="../Hack4Nature/data/limit_marseille.json"
@@ -18,9 +18,6 @@ class city_inspectation:
         self.file_load()
         self.polygon=self.forming_polygon()
         self.framing_region()
-        
-
-  
     def file_load(self):
         with open(self.file_object) as f:
 
@@ -97,7 +94,6 @@ class city_inspectation:
         plt.scatter(island_points[:,1],island_points[:,0])#,s=10,c=island_points_colors) 
         plt.scatter(lsstt[:,1],lsstt[:,0],s=11,c=sea_points_colors)
 
-
     def if_meet_city(self,grid=np.array([[0,0],[1,0],[0,1],[1,1]])):
         #self.polygon=forming_polygon()
         for i in range(grid.shape[0]):
@@ -121,14 +117,11 @@ class city_inspectation:
             j+=1
         return False
 
-    def pick_point(self,number,size):
-        sector=self.sectors_array[0][0]
-        maxx=max([sector[i][0] for i in range(len(sector))])
-        minx=min([sector[i][0] for i in range(len(sector))])
-        maxy=max([sector[i][1] for i in range(len(sector))])
-        miny=min([sector[i][1] for i in range(len(sector))])
-        l1=np.linspace(minx,maxx,size[0])
-        l2=np.linspace(miny,maxy,size[1])   
+    
+    def pick_point(self,number,size=(10,10)):
+        
+        l1=np.linspace(self.minx,self.maxx,size[0])
+        l2=np.linspace(self.miny,self.maxy,size[1])   
         points=[]
         for i in range(1,number+1):
             inside=False
@@ -141,16 +134,39 @@ class city_inspectation:
                     inside =True
                     points.append(point)
         return points
-
+"""
+sector=self.sectors_array[0][0]
+maxx=max([sector[i][0] for i in range(len(sector))])
+minx=min([sector[i][0] for i in range(len(sector))])
+maxy=max([sector[i][1] for i in range(len(sector))])
+miny=min([sector[i][1] for i in range(len(sector))])
+"""
 
                 
 
 
 
 
-
-
-
-
+class requester_mapbox:
+    def __init__(self):
+        return None
     
+    def request(self,mapbox_api_key,coordinates_box):
 
+        str1="""curl -g "https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/["""
+        str2=str(coordinates_box[0])+','+str(coordinates_box[1])+','+str(coordinates_box[2])+','+str(coordinates_box[3])
+        str3= """]/400x400?padding=50,10,20&access_token="""
+        str4="""" --output example-mapbox-static-bbox-2.png"""
+
+        strtot=str1+str2+str3+mapbox_api_key+str4
+        os.system(strtot)
+        print(strtot)
+        return 0
+
+if __name__ == "__main__":
+    obj=city_inspectation()
+    obj.framing_region()
+    point=obj.pick_point(100)
+    MAPBOX_TOKEN=os.environ.get("MAPBOX_TOKEN")
+    print(MAPBOX_TOKEN)
+    requester_mapbox().request(MAPBOX_TOKEN,[ 5.382127,43.356819, 5.582127,43.4])
