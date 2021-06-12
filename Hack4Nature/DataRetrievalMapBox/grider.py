@@ -8,7 +8,7 @@ from itertools import product
 import os
 
 class city_inspectation:
-    file_object="../Hack4Nature/data/limit_marseille.json"
+    file_object="Hack4Nature/data/limit_marseille.json"
     # minx=0
     # maxx=1
     # miny=0
@@ -45,10 +45,10 @@ class city_inspectation:
     
     def framing_region(self):
         self.all_sectors=np.concatenate([self.sectors_array[i][0] for i in range(7)])
-        self.minx=min(self.all_sectors[:,1])
-        self.maxx=max(self.all_sectors[:,1])
-        self.miny=min(self.all_sectors[:,0])
-        self.maxy=max(self.all_sectors[:,0])
+        self.minx=min(self.all_sectors[:,0])
+        self.maxx=max(self.all_sectors[:,0])
+        self.miny=min(self.all_sectors[:,1])
+        self.maxy=max(self.all_sectors[:,1])
         return [self.minx,self.maxx,self.miny,self.maxy]
 
     def forming_grid(self,size):
@@ -122,6 +122,7 @@ class city_inspectation:
         
         l1=np.linspace(self.minx,self.maxx,size[0])
         l2=np.linspace(self.miny,self.maxy,size[1])   
+        print()
         points=[]
         for i in range(1,number+1):
             inside=False
@@ -151,22 +152,34 @@ class requester_mapbox:
     def __init__(self):
         return None
     
-    def request(self,mapbox_api_key,coordinates_box):
+    def request(self,mapbox_api_key,coordinates_box,path_to_file="""example-mapbox-static-bbox-2.png"""):
 
         str1="""curl -g "https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/["""
         str2=str(coordinates_box[0])+','+str(coordinates_box[1])+','+str(coordinates_box[2])+','+str(coordinates_box[3])
         str3= """]/400x400?padding=50,10,20&access_token="""
-        str4="""" --output example-mapbox-static-bbox-2.png"""
+        str4="""" --output """
+        
 
-        strtot=str1+str2+str3+mapbox_api_key+str4
+        strtot=str1+str2+str3+mapbox_api_key+str4+path_to_file
         os.system(strtot)
-        print(strtot)
         return 0
+    def request_packet(self,number=10,dimensions=(0.001,0.001)):
+        
+        point=obj.pick_point(number)
+        for i in range(number):
+            ls=[point[number-1][0],point[number-1][1],point[number-1][0]+0.001,point[number-1][1]+0.001]
+            path_to_file="raw_data/mapbox_tests/satellite"+str(ls[0])+str(ls[2])
+            requester_mapbox().request(MAPBOX_TOKEN,ls,path_to_file) 
+
+
 
 if __name__ == "__main__":
+    os.system(".keys.sh")
     obj=city_inspectation()
     obj.framing_region()
-    point=obj.pick_point(100)
+    point=obj.pick_point(10)
     MAPBOX_TOKEN=os.environ.get("MAPBOX_TOKEN")
     print(MAPBOX_TOKEN)
-    requester_mapbox().request(MAPBOX_TOKEN,[ 5.382127,43.356819, 5.582127,43.4])
+    ls=[point[0][0],point[0][1],point[0][0]+0.001,point[0][1]+0.001]
+
+    requester_mapbox().request(MAPBOX_TOKEN,ls)
