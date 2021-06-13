@@ -4,7 +4,9 @@ import glob
 import os
 
 
-def generate_csv_training(csv_name='csv_training.csv'):
+def generate_csv_training(path_images_csv = 'raw_data/data_images/',
+                          path_xml = 'raw_data/data_xml/',
+                          csv_name = 'csv_training.csv'):
     '''
         Généner le fichier csv pour le training du model.
         Les dossiers 'data_images' et 'data_xml' contenant respectivement les images et les fichiers .xml 
@@ -12,8 +14,8 @@ def generate_csv_training(csv_name='csv_training.csv'):
         Les dossiers sont codés en dur juste pour l'entrainement, so no worries !!!
     '''
 
-    path_images_csv = 'raw_data/data_images/'    
-    path_xml = 'raw_data/data_xml/'
+    #path_images_csv = 'raw_data/data_images'    
+    #path_xml = 'raw_data/data_xml/'
 
 
     path_xml_list = glob.glob(path_xml+'*.xml')
@@ -28,6 +30,7 @@ def generate_csv_training(csv_name='csv_training.csv'):
 
     
     # converted dataframe to file and saved alongside the images
+    print(os.path.join(path_images_csv, csv_name))
     csv = os.path.join(path_images_csv, csv_name)
     df.to_csv(csv, index=False)
     
@@ -36,7 +39,8 @@ def generate_csv_training(csv_name='csv_training.csv'):
 
 
 
-def generate_csv_evaluation(xml_path, csv_name='csv_eval.csv'):
+def generate_csv_evaluation(xml_path = 'raw_data/data_xml/', 
+                            csv_name = 'csv_eval.csv'):
     """
         test: Generates a csv file from corresponding xml file 
         and save in 'data_csv' folder in raw_data folder
@@ -55,7 +59,7 @@ def generate_csv_evaluation(xml_path, csv_name='csv_eval.csv'):
 
 
 if __name__ == "__main__":
-    df, annotations_path = generate_csv_training("csv_name.csv")
+    df, annotations_path = generate_csv_training(csv_name="csv_name.csv")
     print(df.head(3))
     print(annotations_path)
     
