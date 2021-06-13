@@ -89,7 +89,7 @@ class city_inspectation:
         island_points=np.array(island_points)
         lsst=np.array(lsst)
         lsstt=np.array(lsstt)
-        print((len(island_points_colors)))
+        #print((len(island_points_colors)))
         island_points_colors[len(island_points_colors)-1]=0
         plt.scatter(island_points[:,1],island_points[:,0])#,s=10,c=island_points_colors) 
         plt.scatter(lsstt[:,1],lsstt[:,0],s=11,c=sea_points_colors)
@@ -119,18 +119,19 @@ class city_inspectation:
 
     
     def pick_point(self,number,size=(10,10)):
-        
+        print(self.minx,self.maxx)
         l1=np.linspace(self.minx,self.maxx,size[0])
         l2=np.linspace(self.miny,self.maxy,size[1])   
-        print()
+        
         points=[]
         for i in range(1,number+1):
             inside=False
             while not inside:    
                 r1=random.randint(0,len(l1)-1)
                 r2=random.randint(0,len(l2)-1)
+                #print(r1,r2)
                 point=[l1[r1],l2[r2]]
-                print(self.if_in_city(point),point)
+                #print(self.if_in_city(point),point)
                 if self.if_in_city(point):
                     inside =True
                     points.append(point)
@@ -149,37 +150,45 @@ miny=min([sector[i][1] for i in range(len(sector))])
 
 
 class requester_mapbox:
-    def __init__(self):
-        return None
     
-    def request(self,mapbox_api_key,coordinates_box,path_to_file="""example-mapbox-static-bbox-2.png"""):
+    
+    def request(self,mapbox_api_key,coordinates_box,path_to_file="""raw_data/mapbox_tests/satellite/example-mapbox-static-bbox-2.png"""):
 
         str1="""curl -g "https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/["""
-        str2=str(coordinates_box[0])+','+str(coordinates_box[1])+','+str(coordinates_box[2])+','+str(coordinates_box[3])
+        str2=str(coordinates_box
+        
+        [0])+','+str(coordinates_box[1])+','+str(coordinates_box[2])+','+str(coordinates_box[3])
         str3= """]/400x400?padding=50,10,20&access_token="""
         str4="""" --output """
         
 
         strtot=str1+str2+str3+mapbox_api_key+str4+path_to_file
+        #print(strtot)
         os.system(strtot)
         return 0
-    def request_packet(self,number=10,dimensions=(0.001,0.001)):
+    def request_packet(self,MAPBOX_TOKEN,obj,number=10,dimensions=(0.001,0.001)):
         
-        point=obj.pick_point(number)
+        
+        point=obj.pick_point(number,(100,100))
+        #print(point)
         for i in range(number):
-            ls=[point[number-1][0],point[number-1][1],point[number-1][0]+0.001,point[number-1][1]+0.001]
-            path_to_file="raw_data/mapbox_tests/satellite"+str(ls[0])+str(ls[2])
-            requester_mapbox().request(MAPBOX_TOKEN,ls,path_to_file) 
+            ls=[point[i][0],point[i][1],point[i][0]+0.00051,point[i][1]+0.00051]
+            path_to_file="raw_data/mapbox_tests/satellite-only-city/Marseille-city-"+str(i)+"-"+str(round(ls[0],3))+","+str(round(ls[1],3))+".png"
+            self.request(MAPBOX_TOKEN,ls,path_to_file) 
+            #print("\n ----------------- ",i,"--------------",path_to_file)
 
 
 
 if __name__ == "__main__":
-    os.system(".keys.sh")
-    obj=city_inspectation()
-    obj.framing_region()
-    point=obj.pick_point(10)
+    os.system("sh key.sh")
+    #point=obj.pick_point(10)
     MAPBOX_TOKEN=os.environ.get("MAPBOX_TOKEN")
-    print(MAPBOX_TOKEN)
-    ls=[point[0][0],point[0][1],point[0][0]+0.001,point[0][1]+0.001]
+    obj=city_inspectation()
+    obj.minx=5.376537
+    obj.miny=43.291301
+    obj.maxx=5.404442
+    obj.maxy=43.309708
+    #ls=[point[0][0],point[0][1],point[0][0]+0.001,point[0][1]+0.001]
 
-    requester_mapbox().request(MAPBOX_TOKEN,ls)
+    req=requester_mapbox()#.request(MAPBOX_TOKEN,ls)
+    req.request_packet(MAPBOX_TOKEN,obj,100)
