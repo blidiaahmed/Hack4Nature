@@ -12,8 +12,7 @@ def global_calculator(center_lat, center_lon, tree_x_pix, tree_y_pix, res):
 	mx, my = PixelsToMeters(x, y, res)
 	return MetersToLatLon(mx, my)
 
-def calculate_tree_positions(xml_file):
-	df = utilities.xml_to_annotations(xml_file)
+def calculate_tree_positions(df):
 	df['latitude'] = ''
 	df['longitude'] = ''
 	for index, row in df.iterrows():
@@ -83,6 +82,9 @@ def MetersToLatLon(mx, my):
 	lat = 180 / math.pi * (2 * math.atan(math.exp(lat * math.pi / 180.0)) - math.pi / 2.0)
 	return lat, lon
 
+
+
+df = utilities.xml_to_annotations(xml_file)
 df_maps = calculate_tree_positions('Hack4Nature/data/labels_43.2863_5.3909_a9CTV64.xml')
 df_bing = calculate_tree_positions('Hack4Nature/data/labels_43.2863_5.3909_a9CTV64.xml')
 df = calculate_tree_positions('Hack4Nature/data/datas_43.291301_5.376537_azert.xml')
