@@ -38,7 +38,9 @@ La variable "params" est obtenue par concaténation :
 
 ## MAPBOX
 
-TODO
+Mapbox Static documentation : https://docs.mapbox.com/api/maps/static-images/
+Pour tester des requetes : https://docs.mapbox.com/playground/static/
+MAPBOX_TOKEN
 
 # Fonctions utilisables
 
