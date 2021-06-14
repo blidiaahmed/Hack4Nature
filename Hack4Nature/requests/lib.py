@@ -41,13 +41,13 @@ def generate_storage_files(start_lat, start_lon, end_lat, end_lon, pas_lat, pas_
 
 def generate_local_file(lat,lon, service, destination='datas'):
 	image = request_image_from_service(lat,lon,service)
-	local_filename = f"raw_data/{service}/{destination}_{lat}_{lon}.png"
+	local_filename = f"raw_data/{service}/{destination}_{lat}_{lon}_{service}.png"
 	filename = f"{service}/{destination}_{lat}_{lon}.png"
 	save_image(local_filename, image)
 
 def generate_storage_file(lat,lon, service, destination='datas'):
 	image = request_image_from_service(lat,lon,service)
-	local_filename = f"raw_data/{service}/{destination}_{lat}_{lon}.png"
+	local_filename = f"raw_data/{service}/{destination}_{lat}_{lon}_{service}.png"
 	filename = f"{service}/{destination}_{lat}_{lon}.png"
 	save_image(local_filename, image)
 	upload_to_gcp(filename, service)

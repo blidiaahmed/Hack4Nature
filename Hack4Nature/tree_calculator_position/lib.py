@@ -2,6 +2,8 @@ from deepforest import utilities
 import re
 import math
 
+SERVICES_LIST = ["google_maps", "bing", "mapbox"]
+
 def global_calculator(center_lat, center_lon, tree_x_pix, tree_y_pix, res):
 	mx, my = LatLonToMeters(center_lat,center_lon)
 	center_x, center_y = MetersToPixels(mx, my, res)
@@ -10,28 +12,36 @@ def global_calculator(center_lat, center_lon, tree_x_pix, tree_y_pix, res):
 	mx, my = PixelsToMeters(x, y, res)
 	return MetersToLatLon(mx, my)
 
-def calculate_tree_positions(xml_file, service):
-	if service:
+def calculate_tree_positions(xml_file):
+	df = utilities.xml_to_annotations(xml_file)
+	df['latitude'] = ''
+	df['longitude'] = ''
+	for index, row in df.iterrows():
+		tree_x_pix = (df['xmin'][index] + df['xmax'][index]) / 2
+		tree_y_pix = (df['ymin'][index] + df['ymax'][index]) / 2
+		center_lat, center_lon = extract_center_from_filename(df['image_path'][index])
+		service = extract_service_from_filename(df['image_path'][index])
+		print(service)
 		res = calc_resolution(service)
-		df = utilities.xml_to_annotations(xml_file)
-		df['latitude'] = ''
-		df['longitude'] = ''
-		for index, row in df.iterrows():
-			tree_x_pix = (df['xmin'][index] + df['xmax'][index]) / 2
-			tree_y_pix = (df['ymin'][index] + df['ymax'][index]) / 2
-			center_lat, center_lon = extract_center_from_filename(df['image_path'][index])
-			lat_tree, lon_tree = global_calculator(center_lat, center_lon, tree_x_pix, tree_y_pix, res)
-			df.loc[index, 'latitude'] = lat_tree
-			df.loc[index, 'longitude'] = lon_tree
-		return df
-	else:
-		return False
+		lat_tree, lon_tree = global_calculator(center_lat, center_lon, tree_x_pix, tree_y_pix, res)
+		df.loc[index, 'latitude'] = lat_tree
+		df.loc[index, 'longitude'] = lon_tree
+	return df
 
 def extract_center_from_filename(filename):
 	center = re.search(r'_{1}(\d*.\d*)_{1}(\d*.\d*)', filename)
 	lat = float(center.group(1))
 	lon = float(center.group(2))
 	return lat, lon
+
+def extract_service_from_filename(filename):
+	variables = filename.split('_')
+	variables_set = set(variables)
+	intersection = variables_set.intersection(SERVICES_LIST)
+	if len(list(intersection)) == 0:
+		return ""
+	else:
+		return list(intersection)[0]
 
 def calc_originShift():
 	return 2 * math.pi * 6378137 / 2.0
@@ -73,9 +83,9 @@ def MetersToLatLon(mx, my):
 	lat = 180 / math.pi * (2 * math.atan(math.exp(lat * math.pi / 180.0)) - math.pi / 2.0)
 	return lat, lon
 
-df_maps = calculate_tree_positions('Hack4Nature/data/labels_43.2863_5.3909_a9CTV64.xml', "google_maps")
-df_bing = calculate_tree_positions('Hack4Nature/data/labels_43.2863_5.3909_a9CTV64.xml', "bing")
-df = calculate_tree_positions('Hack4Nature/data/datas_43.291301_5.376537_azert.xml', "mapbox")
+df_maps = calculate_tree_positions('Hack4Nature/data/labels_43.2863_5.3909_a9CTV64.xml')
+df_bing = calculate_tree_positions('Hack4Nature/data/labels_43.2863_5.3909_a9CTV64.xml')
+df = calculate_tree_positions('Hack4Nature/data/datas_43.291301_5.376537_azert.xml')
 print(df_maps)
 print(df_bing)
 print(df)

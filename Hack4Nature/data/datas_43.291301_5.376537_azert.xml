@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <annotation>
 <folder>images</folder>
-<filename>datas_43.291301_5.376537</filename>
+<filename>datas_43.291301_5.376537_mapbox</filename>
 <source>
 <database>MyDatabase</database>
 <annotation>COCO2017</annotation>
