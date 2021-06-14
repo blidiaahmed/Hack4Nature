@@ -2,6 +2,8 @@
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import deepforest
+
 
 app = FastAPI()
 
@@ -22,4 +24,5 @@ def index():
 
 @app.get("/predict")
 def index(v1):
+
     return {"greeting": float(v1)+1}
