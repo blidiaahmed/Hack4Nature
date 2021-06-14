@@ -10,9 +10,9 @@ def global_calculator(center_lat, center_lon, tree_x_pix, tree_y_pix, res):
 	mx, my = PixelsToMeters(x, y, res)
 	return MetersToLatLon(mx, my)
 
-def calculate_tree_positions(xml_file, source):
-	if source:
-		res = calc_resolution(source)
+def calculate_tree_positions(xml_file, service):
+	if service:
+		res = calc_resolution(service)
 		df = utilities.xml_to_annotations(xml_file)
 		df['latitude'] = ''
 		df['longitude'] = ''
@@ -28,7 +28,7 @@ def calculate_tree_positions(xml_file, source):
 		return False
 
 def extract_center_from_filename(filename):
-	center = re.search(r'_{1}(\d*.\d*)_{1}(\d*.\d*)_', filename)
+	center = re.search(r'_{1}(\d*.\d*)_{1}(\d*.\d*)', filename)
 	lat = float(center.group(1))
 	lon = float(center.group(2))
 	return lat, lon
@@ -36,10 +36,12 @@ def extract_center_from_filename(filename):
 def calc_originShift():
 	return 2 * math.pi * 6378137 / 2.0
 
-def calc_resolution(source, zoom=20):
+def calc_resolution(service, zoom=20):
 	tileSize = 256
 	initialResolution = 2 * math.pi * 6378137 / tileSize
-	if source == "google_maps":
+	if service == "google_maps":
+		res = initialResolution / (2**zoom * 2) #Facteur 2 pour scale 2
+	elif service == "mapbox":
 		res = initialResolution / (2**zoom * 2) #Facteur 2 pour scale 2
 	else:
 		res = initialResolution / (2**zoom)
@@ -73,7 +75,7 @@ def MetersToLatLon(mx, my):
 
 df_maps = calculate_tree_positions('Hack4Nature/data/labels_43.2863_5.3909_a9CTV64.xml', "google_maps")
 df_bing = calculate_tree_positions('Hack4Nature/data/labels_43.2863_5.3909_a9CTV64.xml', "bing")
-df = calculate_tree_positions('Hack4Nature/data/labels_43.2863_5.3909_a9CTV64.xml', "mapbox")
+df = calculate_tree_positions('Hack4Nature/data/datas_43.291301_5.376537_azert.xml', "mapbox")
 print(df_maps)
 print(df_bing)
 print(df)
