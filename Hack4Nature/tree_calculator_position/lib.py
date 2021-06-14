@@ -71,5 +71,9 @@ def MetersToLatLon(mx, my):
 	lat = 180 / math.pi * (2 * math.atan(math.exp(lat * math.pi / 180.0)) - math.pi / 2.0)
 	return lat, lon
 
-df = calculate_tree_positions('Hack4Nature/data/labels_43.2863_5.3909_a9CTV64.xml', "google_maps")
+df_maps = calculate_tree_positions('Hack4Nature/data/labels_43.2863_5.3909_a9CTV64.xml', "google_maps")
+df_bing = calculate_tree_positions('Hack4Nature/data/labels_43.2863_5.3909_a9CTV64.xml', "bing")
+df = calculate_tree_positions('Hack4Nature/data/labels_43.2863_5.3909_a9CTV64.xml', "mapbox")
+print(df_maps)
+print(df_bing)
 print(df)
