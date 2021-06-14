@@ -30,7 +30,8 @@ def generate_csv_augmentation(annotations_df,
         path_images_augmented: répertoir de sauvegarde des images augmentées et du csv généré correspondant
         csv_name: nom du fichier csv généré
     '''
-    dfa = annotations_df.loc[:3,:].copy()
+    #dfa = annotations_df.loc[:3,:].copy()
+    dfa = annotations_df.copy()
     
     # get unique image names/paths
     unique_image_paths = dfa.image_path.unique()
