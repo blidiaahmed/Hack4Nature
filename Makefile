@@ -1,3 +1,14 @@
+#LOCAL_PATH=PATH_TO_FILE_train_1k.csv
+
+PROJECT_ID=hack4-316710
+
+BUCKET_NAME=tree_detection_model
+
+BUCKET_FOLDER=data
+#BUCKET_FILE_NAME=$(shell basename ${LOCAL_PATH})
+REGION=europe-west1
+
+
 # ----------------------------------
 #          INSTALL & TEST
 # ----------------------------------
@@ -53,3 +64,10 @@ pypi_test:
 
 pypi:
 	@twine upload dist/* -u $(PYPI_USERNAME)
+
+
+##### Prediction API - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+run_api:
+	uvicorn api.fast:app --reload  # load web server with code autoreload
