@@ -6,6 +6,7 @@ from Hack4Nature.tree_calculator_position.lib import calculate_tree_positions
 from PIL import Image
 import numpy as np
 from io import BytesIO
+
 from starlette.responses import StreamingResponse
 
 app = FastAPI()
@@ -21,6 +22,8 @@ app.add_middleware(
 @app.get("/")
 def index():
     return {"greeting": "Hello Hack4Nature"}
+
+
 
 @app.get("/predict_image_as_file")
 async def index(latitude,longitude,service="bing"):
@@ -47,6 +50,7 @@ def index(latitude,longitude,service="bing"):
         response = request_image_from_service(float(latitude),float(longitude), service)
         img = Image.open(BytesIO(response.content)).convert('RGB')
         for_model = np.array(img).astype('float32')
+
         model = load("model.joblib")
         df = model.predict_image(image=for_model,return_plot=False)
         annotated_image=model.predict_image(image=for_model,return_plot =True)
@@ -81,3 +85,10 @@ def index(latitude,longitude,service="bing"):
         return {"error": "No such service"}
 
 
+@app.get("/predict_image_given")
+def index(image):
+    model = load("model.joblib")
+    df = model.predict_image(image=image,return_plot=False)
+    annotated_image=model.predict_image(image=image,return_plot =True)
+    
+    return {"image":annotated_image.tolist()}
