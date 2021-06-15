@@ -40,6 +40,9 @@ python-dotenv
 googlemaps
 shapely
 
+uvicorn
+fastapi
+aiofiles
 
 #DataAugmentation
 imgaug
