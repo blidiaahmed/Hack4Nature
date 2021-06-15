@@ -90,5 +90,5 @@ def index(image):
     model = load("model.joblib")
     df = model.predict_image(image=image,return_plot=False)
     annotated_image=model.predict_image(image=image,return_plot =True)
-    datas = calculate_tree_positions(df, float(latitude),float(longitude), service)
+    
     return {"data":datas,"image":annotated_image.tolist()}
