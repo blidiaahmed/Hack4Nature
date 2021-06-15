@@ -14,7 +14,7 @@ def request_image(lat,lon):
 	image = gmaps.static_map(size=params['size'], zoom=params['zoom'],
 							 center=params['center'], scale=params['scale'], 
 							 maptype=params['maptype'])
-	return image
+	return list(image)
 
 def set_params(lat,lon):
 	params = {
