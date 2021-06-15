@@ -12,15 +12,16 @@ def global_calculator(center_lat, center_lon, tree_x_pix, tree_y_pix, res):
 	mx, my = PixelsToMeters(x, y, res)
 	return MetersToLatLon(mx, my)
 
-def calculate_tree_positions(df):
+def calculate_tree_positions(df, center_lat='', center_lon='', service=''):
 	df['latitude'] = ''
 	df['longitude'] = ''
 	for index, row in df.iterrows():
 		tree_x_pix = (df['xmin'][index] + df['xmax'][index]) / 2
 		tree_y_pix = (df['ymin'][index] + df['ymax'][index]) / 2
-		center_lat, center_lon = extract_center_from_filename(df['image_path'][index])
-		service = extract_service_from_filename(df['image_path'][index])
-		print(service)
+		if not center_lat and not center_lon:
+			center_lat, center_lon = extract_center_from_filename(df['image_path'][index])
+		if not service:
+			service = extract_service_from_filename(df['image_path'][index])
 		res = calc_resolution(service)
 		lat_tree, lon_tree = global_calculator(center_lat, center_lon, tree_x_pix, tree_y_pix, res)
 		df.loc[index, 'latitude'] = lat_tree
