@@ -22,7 +22,6 @@ app.add_middleware(
 def index():
     return {"greeting": "Hello Hack4Nature"}
 
-
 @app.get("/predict_image_as_file")
 async def index(latitude,longitude,service="bing"):
     if service=="bing":
@@ -80,4 +79,5 @@ def index(latitude,longitude,service="bing"):
         return {"image":annotated_image.tolist()}
     else:
         return {"error": "No such service"}
+
 
