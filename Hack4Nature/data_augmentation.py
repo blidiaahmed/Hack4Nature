@@ -49,8 +49,8 @@ def horizontal_flip(data,
     
     data_flip['image_path'] = os.path.join(directory,f"flip_{base}")
     
-    data_flip['ymin'] = image_shape[1] - data_flip['ymin']
-    data_flip['ymax'] = image_shape[1] - data_flip['ymax']
+    data_flip['ymin'] = image_shape[1] - data['ymax']
+    data_flip['ymax'] = image_shape[1] - data['ymin']
     
     # On retourne un DataFrame près à l'emploi
     return data_flip
@@ -91,8 +91,8 @@ def vertical_flip(data,
     
     data_miror['image_path'] = os.path.join(directory,f"miror_{base}")
     
-    data_miror['xmin'] = image_shape[0] - data_miror['xmin']
-    data_miror['xmax'] = image_shape[0] - data_miror['xmax']
+    data_miror['xmin'] = image_shape[0] - data['xmax']
+    data_miror['xmax'] = image_shape[0] - data['xmin']
     
     # On retourne un DataFrame près à l'emploi
     return data_miror
