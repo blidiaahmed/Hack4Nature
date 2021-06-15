@@ -8,6 +8,7 @@ from Hack4Nature.requests.lib import request_image_from_service,generate_local_f
 from  Hack4Nature.tree_calculator_position.lib import calculate_tree_positions
 from PIL import Image
 import numpy as np
+import png
 
 
 app = FastAPI()
@@ -27,7 +28,7 @@ def index():
     return {"greeting": "Hello nature1"}
 
 
-@app.get("/predict")
+@app.get("/predict1")
 def index(latitude,longitude,service="bing"):
     if service=="bing":
         print(latitude,longitude,type(latitude),type(longitude))
@@ -39,13 +40,11 @@ def index(latitude,longitude,service="bing"):
     
     model=load("model.joblib")
     df=model.predict_image(np.asarray(image),return_plot =False)
-    annotated_image=model.predict_image(np.asarray(image),return_plot =False)
-    # df=calculate_tree_positions(df)
-
-    return {"the image": annotated_image,"the date":df}
+    annotated_image=model.predict_image(np.asarray(image),return_plot =True)
+    return { "data":df,"image":annotated_image.tolist()}
 
 
-@app.get("/predictt")
+@app.get("/predict2")
 def index(image):
     model=load("model.joblib")
     df=model.predict_image(image,return_plot =False)
