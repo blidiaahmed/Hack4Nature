@@ -29,7 +29,7 @@ def index():
     return {"greeting": "Hello nature1"}
 
 
-@app.get("/predict_image")
+@app.get("/predict_dataframe_image")
 def index(latitude,longitude,service="bing"):
     if service=="bing":
         response = request_image_from_service(float(latitude),float(longitude), service)
@@ -43,7 +43,7 @@ def index(latitude,longitude,service="bing"):
     return { "data":df,"image":annotated_image.tolist()}
 
 
-@app.get("/predict2")
+@app.get("/predict")
 def index(image):
     model=load("model.joblib")
     df=model.predict_image(image,return_plot =False)
