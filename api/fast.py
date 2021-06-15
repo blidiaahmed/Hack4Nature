@@ -53,3 +53,4 @@ def index(image):
     return {"annotated_image": annotated_image,"the date":df}
 
 
+
