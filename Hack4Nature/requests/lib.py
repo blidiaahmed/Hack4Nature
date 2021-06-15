@@ -65,12 +65,12 @@ def request_image_from_service(lat,lon,service):
 # Essai en local pour tester les nouvelles fonctions.
 # Départ au dessus de David : 43.2664, 5.3671
 # Fin au rond point de Bonneveine : 43.2545, 5.3819
-generate_local_files(43.2545, 5.3671, 43.2664, 5.3819, 0.1, 0.01, "Marseille", ["google_maps", "bing", "mapbox"], "labels")
+#generate_local_files(43.2545, 5.3671, 43.2664, 5.3819, 0.1, 0.01, "Marseille", ["google_maps", "bing", "mapbox"], "labels")
 # generate_storage_files(43.2545, 5.3671, 43.2664, 5.3819, 0.1, 0.01, "Marseille", ["google_maps", "bing"], "labels")
 
 # Requete test
-lat = 43.291301
-lon = 5.376537
+#lat = 43.291301
+#lon = 5.376537
 # generate_local_file(lat,lon, 'bing')
 # generate_local_file(lat,lon, 'google_maps')
-generate_local_file(lat,lon, 'mapbox')
+#generate_local_file(lat,lon, 'mapbox')

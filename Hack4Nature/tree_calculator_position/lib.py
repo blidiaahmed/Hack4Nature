@@ -84,10 +84,10 @@ def MetersToLatLon(mx, my):
 
 
 
-df = utilities.xml_to_annotations(xml_file)
-df_maps = calculate_tree_positions('Hack4Nature/data/labels_43.2863_5.3909_a9CTV64.xml')
-df_bing = calculate_tree_positions('Hack4Nature/data/labels_43.2863_5.3909_a9CTV64.xml')
-df = calculate_tree_positions('Hack4Nature/data/datas_43.291301_5.376537_azert.xml')
-print(df_maps)
-print(df_bing)
-print(df)
+#df = utilities.xml_to_annotations(xml_file)
+#df_maps = calculate_tree_positions('Hack4Nature/data/labels_43.2863_5.3909_a9CTV64.xml')
+#df_bing = calculate_tree_positions('Hack4Nature/data/labels_43.2863_5.3909_a9CTV64.xml')
+#df = calculate_tree_positions('Hack4Nature/data/datas_43.291301_5.376537_azert.xml')
+#print(df_maps)
+#print(df_bing)
+#print(df)
