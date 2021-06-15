@@ -11,20 +11,26 @@ import imgaug.augmenters as iaa
 from deepforest import utilities
 from Hack4Nature.show_image import image_label
 
-def horizontal_flip(data):
+def horizontal_flip(data,
+                    path_data_images = 'raw_data/data_images/',
+                    path_images_augmented = 'raw_data/data_images_augmented/'):
     """
-    prend un dataframe avec le chemin de l'image et les coordonnées des labels et renvoie
+    prend un dataframe avec le chemin de l'image et les coordonnées des annotations et renvoie
     la transformée horizontal de cette image avec la transformée verticale des annotations
     """
-    path_images_augmented = '../raw_data/data_images_augmented/' 
+     
     
     # On recupère l'image
-    im = Image.open(data['image_path'][0])
+    image_0 = os.path.join(path_data_images, data['image_path'][0]) 
+    print('==============================================================')
+    print('Horizontal flip augmentation in progress ...')
+    im = Image.open(image_0)
+    
     
     
     # On recupère le chemin d'accès
-    directory = os.path.dirname(data['image_path'][0])
-    base = os.path.basename(data['image_path'][0])
+    directory = os.path.dirname(image_0)#data['image_path'][0])
+    base = os.path.basename(image_0)#data['image_path'][0])
     
     # On crée la transformation
     im_flip = ImageOps.flip(im)
@@ -35,7 +41,8 @@ def horizontal_flip(data):
     im_flip.save(os.path.join(path_images_augmented,f"flip_{base}"), format="png")
     
     # On récupère sa dimension
-    image_shape = plt.imread(data['image_path'][0]).shape
+    image_shape = plt.imread(image_0).shape#data['image_path'][0]).shape
+    print(f'shape {image_shape}')
     
     # On adapate les annotations
     data_flip = data.copy()
@@ -48,19 +55,26 @@ def horizontal_flip(data):
     # On retourne un DataFrame près à l'emploi
     return data_flip
 
-def vertical_flip(data):
+def vertical_flip(data,
+                    path_data_images = 'raw_data/data_images/',
+                    path_images_augmented = 'raw_data/data_images_augmented/'):
     """
-    prend un dataframe avec le chemin de l'image et les coordonnées des labels et renvoie
+    prend un dataframe avec le chemin de l'image et les coordonnées des annotations et renvoie
     la transformée verticale de cette image avec la transformée horizontale des annotations
     """
-    path_images_augmented = '../raw_data/data_images_augmented/' 
+     
     
     # On recupère l'image
-    im = Image.open(data['image_path'][0])
-    
+    image_0 = os.path.join(os.path.dirname(path_data_images), data['image_path'][0]) 
+    print('==============================================================')
+    print('Vertical flip augmentation in progress ...')
+    im = Image.open(image_0)
+    #print(f'im: {im}')
+     
+        
     # On recupère le chemin d'accès
-    directory = os.path.dirname(data['image_path'][0])
-    base = os.path.basename(data['image_path'][0])
+    directory = os.path.dirname(image_0)#data['image_path'][0])
+    base = os.path.basename(image_0)#data['image_path'][0])
     
     # On crée la transformation
     im_mirror = ImageOps.mirror(im)
@@ -70,7 +84,7 @@ def vertical_flip(data):
     im_mirror.save(os.path.join(path_images_augmented,f"miror_{base}"), format="png")
     
     # On récupère sa dimension
-    image_shape = plt.imread(data['image_path'][0]).shape
+    image_shape = plt.imread(image_0).shape#data['image_path'][0]).shape
     
     # On adapate les annotations
     data_miror = data.copy()
@@ -83,16 +97,27 @@ def vertical_flip(data):
     # On retourne un DataFrame près à l'emploi
     return data_miror
 
-def bright_change(data):
+
+
+def bright_change(data,
+                  path_data_images = 'raw_data/data_images/',
+                  path_images_augmented = 'raw_data/data_images_augmented/'):
+    """
+        Ajoute un docstring !!!
+    """
     
-    path_images_augmented = '../raw_data/data_images_augmented/' 
+    #image = imageio.imread(data['image_path'][0])
+    #print(type(image))
+    image_path = os.path.join(os.path.dirname(path_data_images), data['image_path'][0]) 
+    print('==============================================================')
+    print('Bightness augmentation in progress ...')
+    image_0 = imageio.imread(image_path)
     
-    image = imageio.imread(data['image_path'][0])
     contrast=iaa.GammaContrast(gamma=(0.5, 2.0))
-    contrast_image =contrast.augment_image(image)
+    contrast_image =contrast.augment_image(image_0)
     
-    directory = os.path.dirname(data['image_path'][0])
-    base = os.path.basename(data['image_path'][0])
+    directory = os.path.dirname(image_path)#data['image_path'][0])
+    base = os.path.basename(image_path)#data['image_path'][0])
     
     # imageio.imwrite(os.path.join(directory,f"contrast_{base}"), contrast_image)
     imageio.imwrite(os.path.join(path_images_augmented,f"contrast_{base}"), contrast_image)
@@ -103,16 +128,26 @@ def bright_change(data):
     
     return data_bright
 
-def color_change(data):
+
+
+def color_change(data,
+                 path_data_images = 'raw_data/data_images/',
+                 path_images_augmented = 'raw_data/data_images_augmented/'):
+    """
+        Ajoute un docstring !!!
+    """
     
-    path_images_augmented = '../raw_data/data_images_augmented/' 
+    #image = imageio.imread(data['image_path'][0])
+    image_path = os.path.join(os.path.dirname(path_data_images), data['image_path'][0]) 
+    print('==============================================================')
+    print('Color augmentation in progress ...')
+    image_0 = imageio.imread(image_path)    
     
-    image = imageio.imread(data['image_path'][0])
-    contrast=iaa.GammaContrast(gamma=(0.5, 2.0),per_channel=True)
-    contrast_image =contrast.augment_image(image)
+    contrast=iaa.GammaContrast(gamma=(0.5, 2.0), per_channel=True)
+    contrast_image =contrast.augment_image(image_0)
     
-    directory = os.path.dirname(data['image_path'][0])
-    base = os.path.basename(data['image_path'][0])
+    directory = os.path.dirname(image_path)#data['image_path'][0])
+    base = os.path.basename(image_path)#data['image_path'][0])
     
     # imageio.imwrite(os.path.join(directory,f"color_{base}"), contrast_image)
     imageio.imwrite(os.path.join(path_images_augmented,f"color_{base}"), contrast_image)
