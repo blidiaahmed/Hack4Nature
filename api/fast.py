@@ -91,4 +91,4 @@ def index(image):
     df = model.predict_image(image=image,return_plot=False)
     annotated_image=model.predict_image(image=image,return_plot =True)
     
-    return {"data":datas,"image":annotated_image.tolist()}
+    return {"image":annotated_image.tolist()}
