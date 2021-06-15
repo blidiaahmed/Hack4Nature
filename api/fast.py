@@ -75,7 +75,7 @@ def index(latitude,longitude,service="bing"):
         return {"error": "No such service"}
 
 @app.get("/predict_image")
-def index(latitude,longitude,service="google_maps"):
+def index(latitude,longitude,service="bing"):
     if service in SERVICES_LIST:
         response = request_image_from_service(float(latitude),float(longitude), service)
         img = Image.open(BytesIO(response.content)).convert('RGB')
