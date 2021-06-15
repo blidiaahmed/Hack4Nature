@@ -93,6 +93,7 @@ def index(latitude,longitude,service="bing"):
 
 @app.get("/predict_image_given")
 def index(image):
+    var=eval("image")
     model = load("model.joblib")
     df = model.predict_image(image=image,return_plot=False)
     annotated_image=model.predict_image(image=image,return_plot =True)

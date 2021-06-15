@@ -7,7 +7,9 @@ def request_image(lat,lon):
 	centerPoint = f"{lat},{lon}"
 	params = set_params()
 	url = f"https://dev.virtualearth.net/REST/v1/Imagery/Map/Aerial/{centerPoint}?{params}"
+	
 	request = requests.get(url)
+
 	if request.status_code == 200:
 	    return request
 	else:
