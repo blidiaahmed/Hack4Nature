@@ -84,4 +84,3 @@ def index(latitude,longitude,service="bing"):
     else:
         return {"error": "No such service"}
 
-
