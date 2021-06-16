@@ -51,8 +51,8 @@ def index(latitude,longitude,service="bing"):
         model = load("model.joblib")
         df = prediction(model, for_model, False)
         datas = calculate_tree_positions(df, float(latitude),float(longitude), service)
-        annotated_image = prediction(model, True)
-        original_image = np.array(for_model).astype('int8')
+        annotated_image = prediction(model, for_model, True)
+        original_image = np.array(for_model).astype('int16')
         return {"data":datas,"image": annotated_image.tolist(), "original_image": original_image.tolist()}
     else:
         return {"error": "No such service"}
@@ -76,7 +76,7 @@ def index(latitude,longitude,service="bing"):
         for_model = response_converter(response)
         model = load("model.joblib")
         annotated_image = prediction(model, for_model, True)
-        original_image = np.array(for_model).astype('int8')
+        original_image = np.array(for_model).astype('int16')
         return {
             "image": annotated_image.tolist(),
             "original_image": original_image.tolist()
@@ -87,12 +87,12 @@ def index(latitude,longitude,service="bing"):
 
 @app.get("/predict_image_given")
 def index(image):
+    print("toto")
     var = eval("image")
     model = load("model.joblib")
-    df = model.predict_image(image=image,return_plot=False)
-    annotated_image = model.predict_image(image=image,return_plot =True)
-    annotated_image = annotated_image[:, :, [2, 1, 0]]
-    return {"image": annotated_image.tolist()}
+    df = prediction(model, image, False)
+    annotated_image = prediction(model, image, True)
+    return {"image": annotated_image.tolist(), "original_image": image}
 
 
 def response_converter(response):
