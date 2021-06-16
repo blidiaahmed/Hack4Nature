@@ -25,14 +25,11 @@ SERVICES_LIST = ['google_maps', 'bing', 'mapbox']
 def index():
     return {"greeting": "Hello Hack4Nature"}
 
-
-
 @app.get("/predict_image_as_file")
 async def index(latitude,longitude,service="bing"):
     if service in SERVICES_LIST:
         response = request_image_from_service(float(latitude),float(longitude), service)
-        img = Image.open(BytesIO(response.content)).convert('RGB')
-        for_model = np.array(img).astype('float32')
+        for_model = response_converter(response)
         model = load("model.joblib")
         image_predicted = model.predict_image(image=for_model,return_plot=True)
         annotated_image = Image.fromarray(image_predicted, 'RGB')
@@ -50,14 +47,13 @@ async def index(latitude,longitude,service="bing"):
 def index(latitude,longitude,service="bing"):
     if service in SERVICES_LIST:
         response = request_image_from_service(float(latitude),float(longitude), service)
-        img = Image.open(BytesIO(response.content)).convert('RGB')
-        for_model = np.array(img).astype('float32')
+        for_model = response_converter(response)
         model = load("model.joblib")
-        df = model.predict_image(image=for_model,return_plot=False)
-        annotated_image=model.predict_image(image=for_model,return_plot =True)
-        annotated_image = annotated_image[:, :, [2, 1, 0]]
+        df = prediction(model, for_model, False)
         datas = calculate_tree_positions(df, float(latitude),float(longitude), service)
-        return {"data":datas,"image": annotated_image.tolist(), "original_image": for_model.tolist()}
+        annotated_image = prediction(model, True)
+        original_image = np.array(for_model).astype('int8')
+        return {"data":datas,"image": annotated_image.tolist(), "original_image": original_image.tolist()}
     else:
         return {"error": "No such service"}
 
@@ -65,12 +61,11 @@ def index(latitude,longitude,service="bing"):
 def index(latitude,longitude,service="bing"):
     if service in SERVICES_LIST:
         response = request_image_from_service(float(latitude),float(longitude), service)
-        img = Image.open(BytesIO(response.content)).convert('RGB')
-        for_model = np.array(img).astype('float32')
+        for_model = response_converter(response)
         model = load("model.joblib")
-        df = model.predict_image(image=for_model,return_plot=False)
+        df = prediction(model, for_model, False)
         datas = calculate_tree_positions(df, float(latitude),float(longitude), service)
-        return {"data":datas}
+        return {"data": datas}
     else:
         return {"error": "No such service"}
 
@@ -78,14 +73,13 @@ def index(latitude,longitude,service="bing"):
 def index(latitude,longitude,service="bing"):
     if service in SERVICES_LIST:
         response = request_image_from_service(float(latitude),float(longitude), service)
-        img = Image.open(BytesIO(response.content)).convert('RGB')
-        for_model = np.array(img).astype('float32')
+        for_model = response_converter(response)
         model = load("model.joblib")
-        annotated_image=model.predict_image(image=for_model,return_plot =True)
-        annotated_image = annotated_image[:, :, [2, 1, 0]]
+        annotated_image = prediction(model, for_model, True)
+        original_image = np.array(for_model).astype('int8')
         return {
             "image": annotated_image.tolist(),
-            "original_image": for_model.tolist()
+            "original_image": original_image.tolist()
         }
     else:
         return {"error": "No such service"}
@@ -93,9 +87,24 @@ def index(latitude,longitude,service="bing"):
 
 @app.get("/predict_image_given")
 def index(image):
-    var=eval("image")
+    var = eval("image")
     model = load("model.joblib")
     df = model.predict_image(image=image,return_plot=False)
-    annotated_image=model.predict_image(image=image,return_plot =True)
+    annotated_image = model.predict_image(image=image,return_plot =True)
     annotated_image = annotated_image[:, :, [2, 1, 0]]
-    return {"image":annotated_image.tolist()}
+    return {"image": annotated_image.tolist()}
+
+
+def response_converter(response):
+    img = Image.open(BytesIO(response.content)).convert('RGB')
+    for_model = np.array(img).astype('float32')
+    return for_model
+
+def prediction(model, image, return_plot):
+    if return_plot == False:
+        df = model.predict_image(image=image,return_plot=False)
+        return df
+    else:
+        annotated_image = model.predict_image(image=image,return_plot=True)
+        annotated_image = annotated_image[:, :, [2, 1, 0]]
+        return annotated_image
