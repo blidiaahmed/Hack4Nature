@@ -7,5 +7,9 @@ COPY model.joblib /model.joblib
 COPY Hack4Nature /Hack4Nature
 COPY api /api
 
+RUN apt-get update
+RUN apt-get install ffmpeg libsm6 libxext6  -y
 
-CMD uvicorn api.fast:app --host 0.0.0.0
+COPY .env /.env
+
+CMD uvicorn api.fast:app --host 0.0.0.0 --port $PORT
