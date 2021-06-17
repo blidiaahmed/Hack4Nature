@@ -4,11 +4,11 @@ setuptools>=26
 twine
 wheel>=0.29
 
-
 # data science
 numpy
 pandas
 scikit-learn
+opencv-python-headless
 
 # tests/linter
 black
@@ -16,8 +16,7 @@ coverage
 flake8
 pytest
 yapf
-
-# API
+API
 gcsfs
 google-cloud-storage
 mlflow
@@ -25,21 +24,23 @@ s3fs
 uvicorn
 fastapi
 
-# utilities
+#utilities
 six>=1.14
 joblib
 memoized-property
 termcolor
 
 #Tree Analysis
-deepforest
+pytorch-lightning==1.3.4
+torch==1.8.1
+torchvision==0.9.1
+deepforest==1.0.0
 ipywidgets
 
 #GoogleMaps
 python-dotenv
 googlemaps
 shapely
-
 uvicorn
 fastapi
 aiofiles
